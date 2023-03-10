@@ -1,0 +1,8 @@
+.pio
+.DS_Store
+raw_material/
+node_modules
+.vscode
+Gemfile
+Gemfile.lock
+_site/
