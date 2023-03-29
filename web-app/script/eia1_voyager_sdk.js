@@ -22,6 +22,7 @@ async function connectSerial() {
 
         console.log("ESP ready!");
         connectBtn.name("&#10003; Connected");
+        connectBtn.domElement.previousSibling.style.backgroundColor = "#19745a";
         handleLoaded();
 
         let initComplete = false;
@@ -53,6 +54,7 @@ async function connectSerial() {
 
     } catch (error) {
         connectBtn.name("&#x26A0; Error with ESP");
+        connectBtn.domElement.previousSibling.style.backgroundColor = "#842047";
         console.error(error);
     }
 }
@@ -155,3 +157,4 @@ gui.add(config, 'connect').name("&#8594 Connect to ESP").onChange(
 )
 
 let connectBtn = gui.__controllers[0];
+connectBtn.domElement.previousSibling.style.backgroundColor = "#842047";

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO - Show/Hide Elements</title>
+    <script src="./../../script/dat.gui.min.js" defer></script>
+    <script src="./../../script/eia1_voyager_sdk.js" defer></script>
+    <script src="./script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
+
+        html,
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100%;
+            color: white;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: rgb(0,0,0);
+            background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(24,24,24,1) 75%, rgba(48,48,48,1) 100%);        
+        }
+
+        p {
+            margin-top: 4 0px;
+            font-weight: 100;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            padding-top: 40px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 100;
+            margin-top: 5px;
+
+        }
+
+        .btn {
+            background-color: #081f2d;
+            border-radius: 29px;
+            border: 1px solid #081F2D;
+            color: white;
+            font-size: 15px;
+            padding: 10px 45px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: 20px;
+        }
+
+        .btn:hover {
+            background-color: white;
+            color: #081F2D;
+            border-color: #081F2D;
+            transition: 0.3s;
+        }
+
+        #gameIntro {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        #gamePlay, #gameEnd {
+            display: none;
+            align-items: center;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+
+        #gamePlay .color {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: .2s all;
+        }
+        #gamePlay .color.highlight {
+            opacity: .8;
+        }
+
+        #progressText {
+            font-size: 40px;
+            font-weight: 100;
+        }
+
+        #fail, #success {
+            color: white;
+            font-weight: bold;
+            font-size: 40px;
+            padding: 100px;
+            box-sizing: border-box;
+            background: black;
+        }
+
+        #fail span, #success span{
+            font-family: 'Noto Emoji', sans-serif;
+        }
+
+#red {
+    background: red;
+}
+
+#blue {
+    background: blue;
+}
+
+#green {
+    background: green;
+}
+
+
+select {  
+  background-color:#081f2d;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20448%22%20enable-background%3D%22new%200%200%20256%20448%22%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E.arrow%7Bfill%3A@{arrow}%3B%7D%3C%2Fstyle%3E%3Cpath%20class%3D%22arrow%22%20d%3D%22M255.9%20168c0-4.2-1.6-7.9-4.8-11.2-3.2-3.2-6.9-4.8-11.2-4.8H16c-4.2%200-7.9%201.6-11.2%204.8S0%20163.8%200%20168c0%204.4%201.6%208.2%204.8%2011.4l112%20112c3.1%203.1%206.8%204.6%2011.2%204.6%204.4%200%208.2-1.5%2011.4-4.6l112-112c3-3.2%204.5-7%204.5-11.4z%22%2F%3E%3C%2Fsvg%3E%0A");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: auto 50%;
+            border-radius: 29px;
+  border:none;
+  color: #ffffff;
+  padding: 10px 30px 10px 10px;
+  outline: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+select:hover {
+    background-color: white;
+    color: black;
+}
+
+small {
+    font-weight: 100;
+    margin-top: 40px;
+    display: inline-block;
+}
+
+        
+    </style>
+</head>
+
+<body>
+
+    <main id="gameIntro">
+        <h1>[DEMO] Analog Interaction <br>The Color Game</h1>
+        <h2>Powered by EIA1 Voyager</h2>
+
+        <img src="imgs/cover.png" alt="Image of additive color mixing" width="200px">
+
+        <p>Bei diesem interaktiven Konzentrationsspiel soll eine immer länger werdende Reihe von Farb-Ton-Kombinationen wiederholt
+            werden. Mit jeder Runde kommt eine weitere Farbe-Ton-Kombination hinzu.</p>
+
+        <form>
+            <div class="form-group">
+                <select id="levelList" class="form-control">
+                </select>
+                <button id="startbutton" type="button" class="btn">Los</button>
+            </div>
+        </form>
+        <small>Anleitung: PIN 12, 27 und 33 anstecken, dann mit ESP verbinden ('Connect to ESP').
+            <br /><br />
+            Danke an Emre Aylan (MKB), er hat den Code für dieses Game geschrieben.
+        </small>
+
+    </main>
+
+    <div id="gamePlay">
+        <div id="pgB">
+          <h3 id="progressText">Level</h3>
+          <!-- <div id="progress">
+            <div id="myBar">0%</div>
+          </div> -->
+        </div>
+
+        <div class="color" id="red"></div>
+        <div class="color" id="blue"></div>
+        <div class="color" id="yellow"></div>
+        <div class="color" id="green"></div>
+        <div class="color" id="purple"></div>
+    </div>
+
+    <div id="gameEnd">
+        <div id="fail" class="alert alert-danger hide" role="alert">
+            <span>💀</span>  SPIEL VERLOREN!
+        </div>
+
+        <div id="success" class="alert alert-success hide" role="alert">
+            <span>✌️</span>SPIEL GEWONNEN!
+        </div>
+    </div>
+</body>
+
+</html>
