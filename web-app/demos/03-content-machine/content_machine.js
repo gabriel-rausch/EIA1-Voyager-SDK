@@ -37,9 +37,9 @@ window.addEventListener("load", function() {
         }
     })
 
-    introElements = shuffleArray(document.querySelectorAll("div[id^=intro]"));
-    middleElements = shuffleArray(document.querySelectorAll("div[id^=middle]"));
-    outroElements = shuffleArray(document.querySelectorAll("div[id^=outro]"));
+    introElements = shuffleArray(document.querySelectorAll("div[id^=intro], div[data-label^=intro]"));
+    middleElements = shuffleArray(document.querySelectorAll("div[id^=middle], div[data-label^=middle]"));
+    outroElements = shuffleArray(document.querySelectorAll("div[id^=outro], div[data-label^=outro]"));
     console.log(middleElements);
 
     init();

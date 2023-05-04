@@ -31,14 +31,14 @@ async function connectSerial() {
             const { value, done } = await reader.read();
 
             if (value) {
-                if (value.substr(value.length-1) == "]" && !initComplete) {
+                if (value.substr(value.length - 1) == "]" && !initComplete) {
                     initComplete = true;
-                } else if(initComplete) {
+                } else if (initComplete) {
                     dataStream += value;
-    
+
                     // data group complete?
                     if (dataStream.length > 8) {
-                        dataElement = dataStream.slice(0,8);
+                        dataElement = dataStream.slice(0, 8);
                         dataStream = dataStream.slice(8);
                         // console.log(dataElement);
                         eventHandler(extractData(dataElement));
@@ -69,22 +69,22 @@ function extractData(data) {
 
 function eventHandler(data) {
 
-    if(data.id == 12 && data.intensity < config.sensitivityThresholdT1) {
+    if (data.id == 12 && data.intensity < config.sensitivityThresholdT1) {
         console.log(data)
         handleTouch12();
-    } else if(data.id == 13 && data.intensity < config.sensitivityThresholdT2) {
+    } else if (data.id == 13 && data.intensity < config.sensitivityThresholdT2) {
         console.log(data)
         handleTouch13();
-    } else if(data.id == 14 && data.intensity < config.sensitivityThresholdT3) {
+    } else if (data.id == 14 && data.intensity < config.sensitivityThresholdT3) {
         console.log(data)
         handleTouch14();
-    } else if(data.id == 27 && data.intensity < config.sensitivityThresholdT4) {
+    } else if (data.id == 27 && data.intensity < config.sensitivityThresholdT4) {
         console.log(data)
         handleTouch27();
-    } else if(data.id == 32 && data.intensity < config.sensitivityThresholdT5) {
+    } else if (data.id == 32 && data.intensity < config.sensitivityThresholdT5) {
         console.log(data)
         handleTouch32();
-    } else if(data.id == 33 && data.intensity < config.sensitivityThresholdT6) {
+    } else if (data.id == 33 && data.intensity < config.sensitivityThresholdT6) {
         console.log(data)
         handleTouch33();
     }
@@ -112,6 +112,44 @@ function handleTouch33() {
 
 }
 
+/**
+ * Add Event Keyboard Suppport
+ * 
+ * Mapping:
+ * 1 = 12
+ * 2 = 13
+ * 3 = 14
+ * 4 = 27
+ * 5 = 32
+ * 6 = 33
+ * 
+ */
+
+window.addEventListener("keypress", function (event) {
+    switch (event.key) {
+        case "1":
+            handleTouch12();
+            break;
+        case "2":
+            handleTouch13();
+            break;
+        case "3":
+            handleTouch14();
+            break;
+        case "4":
+            handleTouch27();
+            break;
+        case "5":
+            handleTouch32();
+            break;
+        case "6":
+            handleTouch32();
+            break;
+        default:
+            break;
+    }
+})
+
 
 let config = {
     sensitivityThreshold: 24,
@@ -134,7 +172,7 @@ let guiMain = gui.addFolder("EIA1 Voyager SDK");
 guiMain.open();
 let guiGroupTouch = guiMain.addFolder("Touch Config");
 guiGroupTouch.open();
-guiGroupTouch.add(config, 'sensitivityThreshold').name("Sensitivity (All)").min(1).max(99).step(1).onChange(function() {
+guiGroupTouch.add(config, 'sensitivityThreshold').name("Sensitivity (All)").min(1).max(99).step(1).onChange(function () {
     console.log("okok")
     config.sensitivityThresholdT1 = config.sensitivityThreshold;
     config.sensitivityThresholdT2 = config.sensitivityThreshold;
